@@ -1,6 +1,7 @@
 import { Button } from 'react-bootstrap';
 import './App.css';
 import { useState } from 'react';
+import Timer from './Timer';
 
 type Todo = {
     id: number;
@@ -80,6 +81,8 @@ const addTodo = () => {
             </ul>
         </div>
       </div>
+      <br/>
+      <Timer></Timer>
     </div>
   )
 }
