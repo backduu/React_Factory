@@ -23,24 +23,28 @@ const handleCheckBoxChange = (itemId : number) => {
 }
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <h1 className="titlebk">오늘 할 일</h1>
-      <div className="container">
-        <div className="board">
-            <ul>
+      <div className="card">
+        <div className="card-body">
+            <ul className="list-group">
                 {
                     todos.map((todo)=>(
-                        <li key={todo.id}>
-                            <input type="checkbox"
-                                onChange={()=>{
-                                    handleCheckBoxChange(todo.id);
-                                }}
-                            />
-                            <span>
-                                {
-                                    todo.isChecked ? <del>{todo.text}</del> : <span>{todo.text}</span>
-                                }
-                            </span>
+                        <li key={todo.id} 
+                            className="list-group-item d-flex justify-content-getween align-items-center"
+                        >
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input"
+                                    onChange={()=>{
+                                        handleCheckBoxChange(todo.id);
+                                    }}
+                                />
+                                <label className="form-check-label">
+                                    {
+                                        todo.isChecked ? <del>{todo.text}</del> : <span>{todo.text}</span>
+                                    }
+                                </label>
+                            </div>
                         </li>
                     ))
                 }
