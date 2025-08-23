@@ -14,6 +14,14 @@ const TodoList : React.FC = () => {
     {id: 1003, text: '좀비섬 조지기', isChecked: false}
   ]);
 
+const handleCheckBoxChange = (itemId : number) => {
+    setTodos((prevItems) =>
+      prevItems.map((item)=>
+            item.id === itemId ? {...item, isChecked : !item.isChecked} : item
+        )  
+    );
+}
+
   return (
     <div className="container">
       <h1 className="titlebk">오늘 할 일</h1>
@@ -21,13 +29,20 @@ const TodoList : React.FC = () => {
         <div className="board">
             <ul>
                 {
-                    todos.map(
-                        (
-                            todo => (
-                                <li>{todo.text}</li>
-                            )
-                        )
-                    )
+                    todos.map((todo)=>(
+                        <li key={todo.id}>
+                            <input type="checkbox"
+                                onChange={()=>{
+                                    handleCheckBoxChange(todo.id);
+                                }}
+                            />
+                            <span>
+                                {
+                                    todo.isChecked ? <del>{todo.text}</del> : <span>{todo.text}</span>
+                                }
+                            </span>
+                        </li>
+                    ))
                 }
             </ul>
         </div>
