@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import './App.css';
 import { useState } from 'react';
 
@@ -22,9 +23,37 @@ const handleCheckBoxChange = (itemId : number) => {
     );
 }
 
+const [newTodo, setNewTodo] = useState<string>('');
+const addTodo = () => {
+  // newTodo를 todos에 추가
+  if(newTodo.trim() !== '') {
+    setTodos([
+      ...todos,
+      {id: Date.now(), text: newTodo, isChecked: false}
+    ]);
+    setNewTodo('');
+  }
+}
   return (
     <div className="container mt-5">
       <h1 className="titlebk">오늘 할 일</h1>
+      {/* 할 일 추가 관련 */}
+      <div className="form-group d-flex align-items-center mb-3">
+        <input 
+              type="text" 
+              className="form-control me-2" 
+              placeholder="오늘의 계획을 추가하세요." 
+              style={{writingMode: 'horizontal-tb'}}
+              onChange={(e)=>setNewTodo(e.target.value)}
+              value={newTodo}
+        />
+        <button 
+                className="btn btn-success" 
+                style={{whiteSpace: 'nowrap'}}
+                onClick={addTodo}
+        >추가</button>
+      </div>
+      {/* 리스트 업 */}
       <div className="card">
         <div className="card-body">
             <ul className="list-group">
