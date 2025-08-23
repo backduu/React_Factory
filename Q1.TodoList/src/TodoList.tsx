@@ -1,7 +1,9 @@
-import { Button } from 'react-bootstrap';
 import './App.css';
 import { useState } from 'react';
 import Timer from './Timer';
+import { Button } from 'react-bootstrap';
+import TodoModal from './TodoModal';
+
 
 type Todo = {
     id: number;
@@ -25,6 +27,9 @@ const handleCheckBoxChange = (itemId : number) => {
 }
 
 const [newTodo, setNewTodo] = useState<string>('');
+const [showDetail, setShowDetail] = useState<boolean>(false);
+const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
 const addTodo = () => {
   // newTodo를 todos에 추가
   if(newTodo.trim() !== '') {
@@ -35,6 +40,23 @@ const addTodo = () => {
     setNewTodo('');
   }
 }
+const removeTodo = (id :number) => {
+  setTodos(todos.filter((todo)=> {
+    return todo.id !== id;
+  }))
+}
+
+const handleTodoClick = (todo: Todo) => {
+  setSelectedTodo(todo);
+  setShowDetail(true);
+}
+
+const handleCloseDetail = () => {
+  setShowDetail(false);
+}
+
+
+
   return (
     <div className="container mt-5">
       <h1 className="titlebk">오늘 할 일</h1>
@@ -61,7 +83,7 @@ const addTodo = () => {
                 {
                     todos.map((todo)=>(
                         <li key={todo.id} 
-                            className="list-group-item d-flex justify-content-getween align-items-center"
+                            className="list-group-item d-flex justify-content-between align-items-center"
                         >
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input"
@@ -71,17 +93,22 @@ const addTodo = () => {
                                 />
                                 <label className="form-check-label">
                                     {
-                                        todo.isChecked ? <del>{todo.text}</del> : <span>{todo.text}</span>
+                                        todo.isChecked ? <del>{todo.text}</del> : <span onClick={() => handleTodoClick(todo)}>{todo.text}</span>
                                     }
                                 </label>
                             </div>
+                            <Button className='btn btn-danger'
+                                    onClick={()=>removeTodo(todo.id)}
+                            >삭제</Button>
                         </li>
-                    ))
+                    )) 
                 }
             </ul>
         </div>
       </div>
       <br/>
+      <br/>
+      <TodoModal show={showDetail} handleClose={handleCloseDetail} todo={selectedTodo}/>
       <Timer></Timer>
     </div>
   )
