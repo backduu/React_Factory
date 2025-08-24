@@ -3,8 +3,15 @@ import MyCarousel from "../components/Carousel";
 import bookdata from "../data/Bookdata";
 import type { Book } from "../data/Bookdata";
 import { useState } from "react";
-import { Link } from 'react-router-dom';
 import BookItem from '../components/BookItem';
+import { Route, Routes } from 'react-router-dom'
+import AboutPage from '../pages/AboutPage.tsx';
+import ListPage from '../pages/ListPage.tsx';
+import ContactPage from '../pages/ContactPage.tsx';
+import DetailPage from '../pages/DetailPage.tsx';
+import LoginPage from '../pages/LoginPage.tsx';
+import CartPage from '../pages/CartPage.tsx';
+import HomePage from "../pages/HomePage.tsx";
 
 const Content: React.FC = () => {
     const [books, setBook] = useState<Book[]>(bookdata);
@@ -22,19 +29,16 @@ const Content: React.FC = () => {
                     </Nav>
                 </Container>
             </Navbar>
-            <MyCarousel></MyCarousel>
-
-            <Container>
-                <div className="project_header_container">
-                    <h1 className="project_header">베스트셀러</h1>
-                    <div className="hr"></div>
-                </div>
-                <Row className="text-center">
-                    {books.map((book) => {
-                        return <BookItem key={book.id} book={book} />
-                    })}
-                </Row>
-            </Container>
+            <Routes>
+                <Route path="/" element={<HomePage />}/>
+                <Route path="/about" element={<AboutPage />}/>
+                <Route path="/list" element={<ListPage />}/>
+                <Route path="/contact" element={<ContactPage />}/>
+                <Route path="/cart" element={<CartPage />}/>
+                <Route path="/detail/:id" element={<DetailPage />}/>
+                <Route path="/login" element={<LoginPage />}/>
+                <Route path="*" element={'페이지가 존재하지 않습니다.'}/>
+            </Routes>
         </div>
     );
 };

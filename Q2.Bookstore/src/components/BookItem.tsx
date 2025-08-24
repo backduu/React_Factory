@@ -23,13 +23,13 @@ const BookItem: React.FC<BookItemProps> = ({book}) => {
                     </Card.Title>
                     <div className='description'>
                         <span className='author'>작가: {book.author}</span>
-                        <p/>
+                        <p/> 
                         <span className="star">별점: {book.star}</span>
                         <p/>
                     </div>
                 </Card.Body>
                 <div className="linkTo">
-                    <Link to="/">
+                    <Link to={`/detail/${book.id}`} state={{ book }}>
                         <Button variant="primary">자세히 보기</Button>
                     </Link>
                 </div>
