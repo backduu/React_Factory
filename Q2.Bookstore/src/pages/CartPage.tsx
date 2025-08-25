@@ -3,7 +3,7 @@ import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { useSelector, useDispatch } from "react-redux";
 import type { CartItem } from "../data/store";
 import type { CartArray } from '../data/store';
-import { changeName, increase } from '../data/store';
+import { changeName, increase, plusCount, minusCount } from '../data/store';
 
 interface CartState{
     cart : CartArray;
@@ -40,7 +40,14 @@ const CartPage: React.FC = () => {
                                     <td>{item.name}</td>
                                     <td>{item.price}</td>
                                     <td>{item.quantity}</td>
-                                    <td><Button>변경</Button></td>
+                                    <td><Button className='btn-warning' style={{ marginRight : '10px' }}
+                                                onClick={()=> {
+                                                    dispatch(plusCount(item.id))
+                                                }}>+</Button>
+                                        <Button className='btn-warning' style={{ marginRight : '10px' }}
+                                                onClick={()=> {
+                                                    dispatch(minusCount(item.id))
+                                                }}>-</Button></td>
                                 </tr>
                     ))}
                 </tbody>
@@ -50,7 +57,7 @@ const CartPage: React.FC = () => {
                     <h5>총 상품금액: 34000원</h5>
                 </Col>
                 <Col>
-                    <Button variant="success" onClick={()=>{dispatch(increase())}}>주문하기</Button>
+                    <Button variant="success" onClick={()=>{dispatch(increase(10))}}>주문하기</Button>
                     <div>{cartState.user.id}</div>
                 </Col>
             </Row>

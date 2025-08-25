@@ -7,8 +7,8 @@ const user = createSlice({
         changeName(state) {
             state.name = '김철수'
         },
-        increase(state) {
-            state.id += 1;
+        increase(state, action) {
+            state.id += action.payload;
         }
     }
 })
@@ -36,13 +36,21 @@ const cart = createSlice({
     name : 'cart',
     initialState: {
         cart : [
-            {id : 1, name: '책 1', quantity: 1, price: 33333},
-            {id : 2, name: '책 2', quantity: 1, price: 54252},
+            {id : 0, name: '책 1', quantity: 1, price: 33333},
+            {id : 1, name: '책 2', quantity: 1, price: 54252},
         ],
     } as CartArray,
-    reducers: {}
+    reducers: {
+        plusCount(state, action) {
+            state.cart[action.payload].quantity++;
+        }, 
+        minusCount(state, action) {
+            state.cart[action.payload].quantity--;
+        }
+    }
 })
 
+export const {plusCount, minusCount} = cart.actions;
 
 export default configureStore({
     reducer: {
