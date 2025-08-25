@@ -12,6 +12,7 @@ import DetailPage from '../pages/DetailPage.tsx';
 import LoginPage from '../pages/LoginPage.tsx';
 import CartPage from '../pages/CartPage.tsx';
 import HomePage from "../pages/HomePage.tsx";
+import { PersonFill } from 'react-bootstrap-icons';
 
 const Content: React.FC = () => {
     const [books, setBook] = useState<Book[]>(bookdata);
@@ -27,10 +28,17 @@ const Content: React.FC = () => {
                         <Nav.Link href="/list">Product</Nav.Link>
                         <Nav.Link href="/contact">Contact</Nav.Link>
                     </Nav>
+                    <Nav>
+                        <Nav.Link href="/login" className="d-flex align-items-center">
+                            <PersonFill size={20} className="me-2"/>
+                            Login
+                        </Nav.Link>
+                    </Nav>
                 </Container>
             </Navbar>
             <Routes>
                 <Route path="/" element={<HomePage />}/>
+                <Route path="/cart" element={<CartPage />}/>
                 <Route path="/about" element={<AboutPage />}/>
                 <Route path="/list" element={<ListPage />}/>
                 <Route path="/contact" element={<ContactPage />}/>
