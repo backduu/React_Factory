@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { useLocation, useParams } from 'react-router-dom'
 import type { Book } from '../data/Bookdata';
@@ -12,9 +12,51 @@ const DetailPage: React.FC = () => {
     const location = useLocation();
     const state = location.state as LocationState | undefined;
     const book = state?.book;
-    console.log("dfsdfs")
-    console.log(id)
-    console.log(book)
+    
+    const popupRef = useRef<Window | null>(null);
+
+    useEffect(() => {
+        popupRef.current = window.open('', '_blank', 'width=400, height=300');
+
+        if(popupRef.current) {
+            const popupDoc = popupRef.current.document;
+            popupDoc.title = '특가 할인';
+
+            // 스타일 추가
+            let style = popupDoc.createElement('style');
+            style.textContent = `
+            body {
+              font-family: sans-serif;
+              padding: 20px;
+              text-align: center;
+            }
+            button {
+              margin-top: 20px;
+              padding: 10px 20px;
+              font-size: 16px;
+              cursor: pointer;
+            }
+          `;
+           
+          popupDoc.head.appendChild(style);
+
+          popupDoc.body.innerHTML = `
+            <h2>전 도서 20% 할인</h2>
+            
+            <button id="closeBtn">닫기</button>
+          `;
+          
+           // 닫기 버튼 이벤트 연결
+           popupDoc.getElementById('closeBtn')?.addEventListener('click', () => {
+                popupRef.current?.close();
+           });
+        }
+
+        return () => {
+            popupRef.current?.close();
+        };
+    }, []);
+
     return (
         <div>
             <Container className='mt-5'>
