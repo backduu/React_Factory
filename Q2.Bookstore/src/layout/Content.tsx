@@ -12,7 +12,7 @@ import DetailPage from '../pages/DetailPage.tsx';
 import LoginPage from '../pages/LoginPage.tsx';
 import CartPage from '../pages/CartPage.tsx';
 import HomePage from "../pages/HomePage.tsx";
-import { PersonFill } from 'react-bootstrap-icons';
+import { PersonFill, BasketFill } from 'react-bootstrap-icons';
 
 const Content: React.FC = () => {
     const [books, setBook] = useState<Book[]>(bookdata);
@@ -32,6 +32,10 @@ const Content: React.FC = () => {
                         <Nav.Link href="/login" className="d-flex align-items-center">
                             <PersonFill size={20} className="me-2"/>
                             Login
+                        </Nav.Link>
+                        <Nav.Link href="/cart" className="d-flex align-items-center">
+                            <BasketFill size={20} className="me-2"/>
+                            장바구니에 담기
                         </Nav.Link>
                     </Nav>
                 </Container>

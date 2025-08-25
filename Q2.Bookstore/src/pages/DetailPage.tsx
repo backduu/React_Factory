@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import type { Book } from '../data/Bookdata';
+import {addItem } from '../data/store';
+import {useDispatch} from 'react-redux';
 
 interface LocationState {
     book : Book;
@@ -12,7 +14,8 @@ const DetailPage: React.FC = () => {
     const location = useLocation();
     const state = location.state as LocationState | undefined;
     const book = state?.book;
-    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const popupRef = useRef<Window | null>(null);
 
     useEffect(() => {
@@ -65,7 +68,7 @@ const DetailPage: React.FC = () => {
                     <Card className='border-0'>
                         <Card.Img
                             variant='top'
-                            src = {'/book_cover/' + book.id + '.jpg'}
+                            src = {'/book_cover/' + book?.id + '.jpg'}
                             style={{ borderRadius: '8px' }}
                         />
                     </Card>
@@ -74,19 +77,21 @@ const DetailPage: React.FC = () => {
                         <Card className='border-0 text-center'>
                             <Card.Body>
                                 <Card.Title as="h3" className="mb-4">
-                                    {book.title}
+                                    {book?.title}
                                 </Card.Title>
                                 <Card.Text className='text-muted mb-4'>
-                                    {book.star}
+                                    {book?.star}
                                 </Card.Text>
                                 <Card.Text className='text-muted mb-4'>
-                                    {book.content}
+                                    {book?.content}
                                 </Card.Text>
                                 <Card.Text className='text-primary mb-4' as="h4">
-                                    {book.price}
+                                    {book?.price}
                                 </Card.Text>
                                 <Button variant='primary' 
                                         onClick={() => {
+                                            dispatch(addItem({id : book?.id, name : book?.title, price : book?.price}));
+                                        navigate('/cart');
                                         }}>
                                             카트에 담기
                                 </Button>

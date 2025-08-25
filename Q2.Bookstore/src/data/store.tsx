@@ -1,4 +1,7 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
+import { createSlice, configureStore, combineReducers } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from "redux-persist/lib/storage";
+
 
 const user = createSlice({
     name : 'user',
@@ -35,27 +38,60 @@ export interface CartArray {
 const cart = createSlice({
     name : 'cart',
     initialState: {
-        cart : [
-            {id : 0, name: '책 1', quantity: 1, price: 33333},
-            {id : 1, name: '책 2', quantity: 1, price: 54252},
-        ],
+        cart : [],
     } as CartArray,
     reducers: {
         plusCount(state, action) {
-            state.cart[action.payload].quantity++;
+            const item = state.cart.find((item) => item.id === action.payload);
+            if(item) {
+                item.quantity++;
+            }
         }, 
         minusCount(state, action) {
-            state.cart[action.payload].quantity--;
+            const item = state.cart.find((item) => item.id === action.payload);
+            if(item && item.quantity > 0) {
+                item.quantity--;
+            }
+        },
+        addItem(state, action) {
+            const existItem = state.cart.find((item) => item.id === action.payload.id);
+            
+            if(existItem) {
+                existItem.quantity++;
+            } else {
+                state.cart.push({
+                    id: action.payload.id,
+                    name: action.payload.name,
+                    quantity: 1,
+                    price: action.payload.price,
+                });
+            }
+        },
+        resetCart(state) {
+            state.cart = [];
         }
     }
 })
 
-export const {plusCount, minusCount} = cart.actions;
+export const {plusCount, minusCount, addItem, resetCart} = cart.actions;
 
-export default configureStore({
-    reducer: {
-        stock : stock.reducer,
-        cart: cart.reducer,
-        user: user.reducer
-    }
-})
+{/* 카트 데이터 유지하기 */}
+const rootReducer = combineReducers({
+    user: user.reducer,
+    stock: stock.reducer,
+    cart: cart.reducer,
+});
+
+const persistConfig = {
+    key: "root",
+    storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+const store = configureStore({
+    reducer: persistedReducer,
+});
+
+export const persistor = persistStore(store);
+export default store;
+

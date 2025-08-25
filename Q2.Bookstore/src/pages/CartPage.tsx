@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { useSelector, useDispatch } from "react-redux";
 import type { CartItem } from "../data/store";
 import type { CartArray } from '../data/store';
-import { changeName, increase, plusCount, minusCount } from '../data/store';
+import { changeName, increase, plusCount, minusCount, addItem, resetCart } from '../data/store';
 
 interface CartState{
     cart : CartArray;
@@ -15,9 +15,9 @@ const CartPage: React.FC = () => {
 
     console.log(cartState);
 
-    const getTotalAmount = (): number => {
+    const getTotalAmount = useMemo(()=> {
         return cartState.cart.cart.reduce((total, item) => total + item.quantity * item.price, 0);
-    };
+    }, [cartState.cart]);
 
     const dispatch = useDispatch();
 
@@ -54,11 +54,11 @@ const CartPage: React.FC = () => {
             </Table>
             <Row>
                 <Col>
-                    <h5>총 상품금액: 34000원</h5>
+                    <h5>총 상품금액: {getTotalAmount.toLocaleString()} 원</h5>
                 </Col>
                 <Col>
                     <Button variant="success" onClick={()=>{dispatch(increase(10))}}>주문하기</Button>
-                    <div>{cartState.user.id}</div>
+                    <Button variant="primary" onClick={()=>{dispatch(resetCart())}}>카트 비우기</Button>
                 </Col>
             </Row>
         </Container>
